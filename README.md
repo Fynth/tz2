@@ -216,15 +216,3 @@ docker-compose exec django python manage.py migrate
 ```bash
 docker-compose logs bot
 ```
-
-## 📝 Лицензия
-
-MIT License
-
-## 🤝 Вклад в проект
-
-1. Fork проекта
-2. Создайте feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit изменения (`git commit -m 'Add some AmazingFeature'`)
-4. Push в branch (`git push origin feature/AmazingFeature`)
-5. Откройте Pull Request
