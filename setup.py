@@ -1,0 +1,22 @@
+from setuptools import find_packages, setup
+
+setup(
+    name="tz",
+    version="0.1.0",
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
+    install_requires=[
+        "Django>=4.2.0",
+        "djangorestframework>=3.14.0",
+        "celery>=5.3.0",
+        "django-celery-beat>=2.5.0",
+        "redis>=4.6.0",
+        "psycopg2-binary>=2.9.0",
+        "aiogram>=3.0.0",
+        "aiogram-dialog>=2.0.0",
+        "python-dotenv>=1.0.0",
+        "requests>=2.31.0",
+        "django-cors-headers>=4.3.0",
+        "gunicorn>=21.2.0",
+    ],
+)

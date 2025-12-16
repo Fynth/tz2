@@ -1,0 +1,81 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=todo_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5433:5432" # Changed from 5432 to 5433 to avoid conflict
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  django:
+    build: .
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=todo_db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+
+  celery:
+    build: .
+    command: bash -c "sleep 10 && celery -A src.core worker -l info"
+    volumes:
+      - .:/app
+    environment:
+      - DB_HOST=db
+      - DB_NAME=todo_db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+      - django
+
+  celery-beat:
+    build: .
+    command: bash -c "sleep 15 && python manage.py migrate && celery -A src.core beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+    volumes:
+      - .:/app
+    environment:
+      - DB_HOST=db
+      - DB_NAME=todo_db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+      - django
+
+  bot:
+    build: .
+    command: python -m src.bot.main
+    volumes:
+      - .:/app
+    environment:
+      - TELEGRAM_BOT_TOKEN=8342568470:AAE3D3OkkIb3WnXbRK1XHFWr7hruk3MhXSs
+      - DJANGO_API_URL=http://django:8000/api
+    depends_on:
+      - django
+
+volumes:
+  postgres_data:

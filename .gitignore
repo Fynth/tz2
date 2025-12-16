@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.pytest_cache/
+.pytest/
+htmlcov/
+.hypothesis/
+
+*.pot
+*.pyo
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+.env
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Docker
+.dockerignore
+
+# Bot
+bot/__pycache__/
